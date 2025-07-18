@@ -147,6 +147,15 @@
         .circle-graph-box {
             width: 260px;
             margin-bottom: 2rem;
+            margin-left: 10px;
+            box-shadow: none !important;
+            border: none !important;
+            background: none !important;
+        }
+        @media (max-width: 600px) {
+          .circle-graph-box {
+            margin-left: 0 !important;
+          }
         }
         .tf-indicator-row {
             display: flex;
@@ -200,19 +209,17 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s, background 0.2s;
+            color: #fff !important;
         }
         .review-tab-btn.active {
             background: transparent;
-            border-bottom: 2px solid #9C27B0;
-            color: #9C27B0;
+            color: #ffd700 !important;
             transform: scale(1.12);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
             z-index: 2;
         }
         .review-tab-btn:hover {
             background: transparent;
             transform: scale(1.12);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
             z-index: 2;
         }
         .tab-icon {
@@ -226,10 +233,37 @@
             min-height: 220px;
             background: transparent;
             border-radius: 0 0 15px 15px;
-            box-shadow: none;
+            box-shadow: none !important;
+            border: none !important;
+            background-color: transparent !important;
             padding: 2rem 1.5rem;
             font-size: 1.1em;
             color: #333;
+        }
+        @media (max-width: 900px) {
+          .review-content-box {
+            padding: 1.2rem 0.5rem;
+            font-size: 1em;
+            min-height: 160px;
+            border-radius: 14px;
+          }
+        }
+        @media (max-width: 600px) {
+          .review-content-box {
+            background: none !important;
+            background-color: transparent !important;
+            color: #fff;
+            border-radius: 1px;
+            min-height: 300px;
+            padding: 1.2rem 0.5rem;
+            font-size: 1em;
+            box-shadow: none !important;
+          }
+        }
+        @media (max-width: 600px) {
+          .result-bg-box > .bg-img {
+            display: none !important;
+          }
         }
         .result-bg-box {
             position: relative;
@@ -247,6 +281,8 @@
             object-fit: contain;
             display: block;
             border-radius: 30px;
+            z-index: 0;
+            position: relative;
         }
         .result-bg-box .result-flex-container {
             position: absolute;
@@ -262,6 +298,195 @@
             align-items: center;
             justify-content: center;
         }
+        @media (max-width: 900px) {
+          .result-flex-container {
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            max-width: 98vw;
+          }
+          .final-graph-section, .final-review-section {
+            min-width: 0;
+            width: 100%;
+            margin-top: 1rem;
+            align-items: center;
+          }
+          .circle-graph-box {
+            width: 90vw;
+            max-width: 320px;
+          }
+          .review-content-box {
+            padding: 1.2rem 0.5rem;
+            font-size: 1em;
+          }
+          .review-tabs {
+            flex-direction: row;
+            gap: 0.2rem;
+            width: 100%;
+          }
+        }
+        @media (max-width: 600px) {
+          .container, .final-page {
+            padding: 0.2rem 0.1rem;
+            min-width: 0;
+            width: 100vw;
+            box-sizing: border-box;
+            min-height: 100vh;
+            justify-content: flex-start;
+            align-items: center;
+          }
+          #finalOneLiner > div {
+            position: relative;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+            min-width: 0;
+            margin: 0 auto 2rem auto;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          #finalOneLiner img {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            display: block;
+          }
+          #finalOneLiner .oneliner-text {
+            font-size: 1.1em;
+            width: 92%;
+            padding: 0.2em 0.1em;
+          }
+          .result-bg-box {
+            width: 95vw;
+            min-width: 0;
+            max-width: 95vw;
+            aspect-ratio: unset;
+            border-radius: 8px;
+            padding: 0;
+            margin: 0 auto 0.5em auto;
+            box-sizing: border-box;
+            min-height: auto;
+            background: url('Final/Black_board.png') center/cover no-repeat !important;
+            background-color: rgba(0,0,0,0.10) !important;
+            border-radius: 1px;
+            min-height: 300px;
+          }
+          .result-bg-box .result-flex-container {
+            position: static;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.3em 0.1em;
+            gap: 0.3em;
+            width: 100%;
+            box-sizing: border-box;
+          }
+          .final-graph-section, .final-review-section {
+            min-width: 0;
+            width: 100%;
+            margin-top: 0.2em;
+            align-items: center;
+            box-sizing: border-box;
+          }
+          .circle-graph-box {
+            width: 80vw;
+            max-width: 180px;
+            margin: 0 auto 0.3em auto;
+          }
+          .tf-indicator-row {
+            flex-direction: row;
+            gap: 0.3rem;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 0.2em;
+          }
+          .tf-indicator {
+            padding: 0.5rem 0.3rem;
+            font-size: 0.9em;
+          }
+          .review-tabs {
+            flex-direction: row;
+            gap: 0.1rem;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 0.3em;
+          }
+          .review-tab-btn {
+            font-size: 0.8em;
+            height: 35px;
+            min-width: 0;
+            padding: 0 1px;
+            flex: 1 1 0;
+            box-sizing: border-box;
+          }
+          .review-content-box {
+            padding: 0.4rem 0.1rem;
+            font-size: 0.85em;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 120px;
+          }
+          .tts-button {
+            width: 100%;
+            margin: 0.3rem 0 0 0;
+            padding: 0.5rem 0;
+            font-size: 0.9em;
+            box-sizing: border-box;
+          }
+          .start-button {
+            width: 95vw;
+            margin: 0.5em 0 0 0;
+            font-size: 1em;
+            padding: 0.8em 0;
+            box-sizing: border-box;
+          }
+        }
+        @media (max-width: 600px) {
+          #finalOneLiner div[style*='position: absolute'] {
+            font-size: 2.2em !important;
+          }
+        }
+        @media (max-width: 600px) {
+          #finalOneLiner div[style*='position: absolute'] {
+            font-size: 1.1em !important;
+          }
+        }
+        .review-green-box {
+            background: transparent;
+            border-radius: 18px;
+            padding: 1.2rem 1.2rem 1.5rem 1.2rem;
+            box-shadow: none !important;
+            border: none !important;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.5rem;
+        }
+        @media (max-width: 900px) {
+            .review-green-box {
+                padding: 0.7rem 0.3rem 1rem 0.3rem;
+                max-width: 98vw;
+                border-radius: 12px;
+            }
+        }
+        @media (max-width: 600px) {
+            .review-green-box {
+                padding: 0.4rem 0.1rem 0.7rem 0.1rem;
+                max-width: 99vw;
+                border-radius: 8px;
+            }
+        }
+        @media (max-width: 600px) {
+          .circle-graph-box {
+            margin-top: 2.2rem !important;
+            margin-left: -30px !important;
+          }
+        }
     </style>
 </head>
 <body>
@@ -276,12 +501,14 @@
                         <div id="finalGraph"></div>
                     </div>
                     <div class="final-review-section">
-                        <div class="review-tabs">
-                            <button class="review-tab-btn" id="tab-comm"><img src="Final/Effective_white.png" data-hover="Final/Effective_yellow.png" alt="소통법" class="tab-icon"></button>
-                            <button class="review-tab-btn" id="tab-strength"><img src="Final/Yougood_white.png" data-hover="Final/Yougood_yellow.png" alt="강점" class="tab-icon"></button>
-                            <button class="review-tab-btn" id="tab-growth"><img src="Final/Improve_white.png" data-hover="Final/Improve_yellow.png" alt="성장" class="tab-icon"></button>
+                        <div class="review-green-box">
+                            <div class="review-tabs">
+                                <button class="review-tab-btn" id="tab-comm"><img src="Final/Effective_white.png" data-hover="Final/Effective_yellow.png" alt="소통법" class="tab-icon"></button>
+                                <button class="review-tab-btn" id="tab-strength"><img src="Final/Yougood_white.png" data-hover="Final/Yougood_yellow.png" alt="강점" class="tab-icon"></button>
+                                <button class="review-tab-btn" id="tab-growth"><img src="Final/Improve_white.png" data-hover="Final/Improve_yellow.png" alt="성장" class="tab-icon"></button>
+                            </div>
+                            <div class="review-content-box" id="reviewContentBox"></div>
                         </div>
-                        <div class="review-content-box" id="reviewContentBox"></div>
                     </div>
                 </div>
             </div>
@@ -319,9 +546,9 @@
                         position: absolute;
                         top: 50%; left: 50%;
                         transform: translate(-50%, -50%);
-                        width: 80%;
+                        width: 90%;
                         color: #333;
-                        font-size: 2.2em;
+                        font-size: 30PX;
                         font-weight: bold;
                         text-align: center;
                         word-break: keep-all;
@@ -391,12 +618,12 @@
                         ${finalAnalysis.strengths.map(strength => `<span style='display:inline-block; background:linear-gradient(90deg,#ffe066,#ffd700); color:#333; font-weight:bold; border-radius:20px; padding:0.4em 1em; font-size:1em; box-shadow:0 2px 8px rgba(255,224,102,0.15); margin-bottom:0.2em;'>#${strength.replace(/\s+/g, '')}</span>`).join('')}
                     </div>
                     <button class="tts-button" onclick="playTTS('당신의 강점은 ${finalAnalysis.strengths.join(", ")} 입니다.')" style="margin-top:1rem; font-family: "NanumGyuriDiary", sans-serif;">🔊 듣기</button>`,
-                    growth: `<ul style='margin:0; padding-left:1.2rem; font-family: "NanumGyuriDiary", sans-serif; font-size:1.25em; color:#fff; font-weight:bold;'>
-                        ${finalAnalysis.growth_areas.map(area => `<li style='margin-bottom:0.5rem; line-height:1.5;'>${area}</li>`).join('')}
-                    </ul>
-                    <button class="tts-button" onclick="playTTS('성장 포인트는 ${finalAnalysis.growth_areas.join(", ")} 입니다.')" style="margin-top:1rem; font-family: "NanumGyuriDiary", sans-serif;">🔊 듣기</button>`
+                    growth: `<div style='display:flex; flex-wrap:wrap; justify-content:center; text-align:center; gap:0.5rem; margin-top:0.5rem; font-family: "NanumGyuriDiary", sans-serif; font-size:1.25em;'>
+    ${finalAnalysis.growth_areas.map(area => `<span style='display:inline-block; background:linear-gradient(90deg,#ffe066,#ffd700); color:#333; font-weight:bold; border-radius:20px; padding:0.4em 1em; font-size:1em; box-shadow:0 2px 8px rgba(255,224,102,0.15); margin-bottom:0.2em;'>#${area}</span>`).join('')}
+</div>
+<button class="tts-button" onclick="playTTS('성장 포인트는 ${finalAnalysis.growth_areas.join(", ")} 입니다.')" style="margin-top:1rem; font-family: \"NanumGyuriDiary\", sans-serif;">🔊 듣기</button>`,
                 };
-                // 탭 이벤트 바인딩
+                // 탭 이벤트 바인딩 (JS 부분)
                 const tabBtns = [
                     {id: 'tab-comm', key: 'comm'},
                     {id: 'tab-strength', key: 'strength'},
@@ -490,16 +717,16 @@
             tabBtns.forEach(btn => {
                 const img = btn.querySelector('img');
                 if (!img) return;
-                const orig = img.getAttribute('src');
-                const hover = img.getAttribute('data-hover');
-                if (!hover) return;
+                // 최초에 원본 src(흰색)와 data-hover(노란색)를 별도 속성에 저장
+                img.setAttribute('data-src-original', img.getAttribute('src'));
+                img.setAttribute('data-hover-original', img.getAttribute('data-hover'));
 
                 // Hover 효과
                 btn.addEventListener('mouseenter', () => {
-                    img.src = hover;
+                    if (!btn.classList.contains('active')) img.src = img.getAttribute('data-hover-original');
                 });
                 btn.addEventListener('mouseleave', () => {
-                    if (!btn.classList.contains('active')) img.src = orig;
+                    if (!btn.classList.contains('active')) img.src = img.getAttribute('data-src-original');
                 });
 
                 // 클릭 시 active 관리 및 이미지 변경
@@ -507,10 +734,14 @@
                     tabBtns.forEach(b => {
                         b.classList.remove('active');
                         const i = b.querySelector('img');
-                        if (i) i.src = i.getAttribute('src');
+                        if (i) {
+                            // 모든 탭 이미지를 항상 src(흰색)로 되돌림
+                            i.src = i.getAttribute('data-src-original');
+                        }
                     });
                     btn.classList.add('active');
-                    img.src = hover;
+                    // 선택된 탭만 hover(노란색) 이미지로
+                    img.src = img.getAttribute('data-hover-original');
                 });
             });
 
@@ -518,7 +749,7 @@
             const activeBtn = document.querySelector('.review-tab-btn.active');
             if (activeBtn) {
                 const img = activeBtn.querySelector('img');
-                const hover = img && img.getAttribute('data-hover');
+                const hover = img && img.getAttribute('data-hover-original');
                 if (img && hover) img.src = hover;
             }
         });
