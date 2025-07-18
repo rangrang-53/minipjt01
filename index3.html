@@ -254,7 +254,7 @@
             background-color: transparent !important;
             color: #fff;
             border-radius: 1px;
-            min-height: 300px;
+            min-height: auto;
             padding: 1.2rem 0.5rem;
             font-size: 1em;
             box-shadow: none !important;
@@ -371,7 +371,7 @@
             background: url('Final/Black_board.png') center/cover no-repeat !important;
             background-color: rgba(0,0,0,0.10) !important;
             border-radius: 1px;
-            min-height: 300px;
+            min-height: auto;
           }
           .result-bg-box .result-flex-container {
             position: static;
@@ -426,7 +426,7 @@
             min-width: 0;
             width: 100%;
             box-sizing: border-box;
-            min-height: 120px;
+            min-height: auto;
           }
           .tts-button {
             width: 100%;
@@ -466,6 +466,9 @@
             flex-direction: column;
             align-items: stretch;
             gap: 0.5rem;
+            min-height: 260px; /* 가장 긴 상자 기준으로 최소 높이 통일 */
+            flex: 1 1 0;
+            height: auto;
         }
         @media (max-width: 900px) {
             .review-green-box {
@@ -486,6 +489,37 @@
             margin-top: 2.2rem !important;
             margin-left: -30px !important;
           }
+        }
+        .review-content-box div[style*='display:flex'][style*='gap:0.5rem'] {
+            flex-wrap: wrap;
+            max-width: 100%;
+            width: 100%;
+            overflow-x: hidden;
+            word-break: keep-all;
+            box-sizing: border-box;
+            justify-content: center;
+            align-items: center;
+        }
+        /* CSS에서 span에 두 줄로 보이도록 스타일 조정 */
+        .review-content-box span {
+            max-width: 320px;
+            min-width: 120px;
+            min-height: 2.4em;
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-break: break-all;
+            box-sizing: border-box;
+            text-align: center;
+            display: block;
+            line-height: 1.3;
+            padding: 0.4em 1em;
+            margin-bottom: 0.2em;
+            background: linear-gradient(90deg,#ffe066,#ffd700);
+            color: #333;
+            font-weight: bold;
+            border-radius: 20px;
+            font-size: 1em;
+            box-shadow: 0 2px 8px rgba(255,224,102,0.15);
         }
     </style>
 </head>
@@ -619,7 +653,13 @@
                     </div>
                     <button class="tts-button" onclick="playTTS('당신의 강점은 ${finalAnalysis.strengths.join(", ")} 입니다.')" style="margin-top:1rem; font-family: "NanumGyuriDiary", sans-serif;">🔊 듣기</button>`,
                     growth: `<div style='display:flex; flex-wrap:wrap; justify-content:center; text-align:center; gap:0.5rem; margin-top:0.5rem; font-family: "NanumGyuriDiary", sans-serif; font-size:1.25em;'>
-    ${finalAnalysis.growth_areas.map(area => `<span style='display:inline-block; background:linear-gradient(90deg,#ffe066,#ffd700); color:#333; font-weight:bold; border-radius:20px; padding:0.4em 1em; font-size:1em; box-shadow:0 2px 8px rgba(255,224,102,0.15); margin-bottom:0.2em;'>#${area}</span>`).join('')}
+    ${finalAnalysis.growth_areas.map(area => {
+        const words = area.split(' ');
+        const mid = Math.ceil(words.length / 2);
+        const line1 = words.slice(0, mid).join(' ');
+        const line2 = words.slice(mid).join(' ');
+        return `<span>#${line1}<br>${line2}</span>`;
+    }).join('')}
 </div>
 <button class="tts-button" onclick="playTTS('성장 포인트는 ${finalAnalysis.growth_areas.join(", ")} 입니다.')" style="margin-top:1rem; font-family: \"NanumGyuriDiary\", sans-serif;">🔊 듣기</button>`,
                 };
