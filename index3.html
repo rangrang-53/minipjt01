@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI T/F 분석기 - 결과</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        body {
+            background-image: url('Question_pg/Bg2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* 최종 결과 페이지 스타일 */
+        @font-face {
+            font-family: 'JejuHallasan';
+            src: url('fonts/JejuHallasan.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'NanumGyuriDiary';
+            src: url('fonts/나눔손글씨 규리의 일기.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        .final-page {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding-top: 2rem;
+        }
+
+        .final-result {
+            margin: 2rem 0;
+        }
+
+        .keyword-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .keyword-category {
+            margin-bottom: 1.5rem;
+        }
+
+        .keyword-category h4 {
+            margin: 0 0 0.8rem 0;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+
+        .keyword-bar-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.6rem;
+            padding: 0.4rem 0;
+        }
+
+        .keyword-label {
+            width: 100px;
+            font-size: 0.9em;
+            color: #555;
+            text-align: right;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .keyword-bar-bg {
+            flex: 1;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .keyword-bar {
+            height: 100%;
+            border-radius: 10px;
+            position: relative;
+            transition: width 0.8s ease;
+        }
+
+        .keyword-bar.t-type {
+            background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+        }
+
+        .keyword-bar.f-type {
+            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+        }
+
+        .keyword-count {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            color: white;
+            font-weight: bold;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        .tts-button {
+            padding: 0.8rem 1.5rem;
+            background-color: #9C27B0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .tts-button:hover {
+            background-color: #7B1FA2;
+            transform: scale(1.05);
+        }
+        .result-flex-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+        .final-graph-section {
+            flex: 0 0 340px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-width: 320px;
+            margin-top: 2rem;
+        }
+        .circle-graph-box {
+            width: 260px;
+            margin-bottom: 2rem;
+        }
+        .tf-indicator-row {
+            display: flex;
+            flex-direction: row;
+            gap: 1.5rem;
+            width: 100%;
+            justify-content: flex-start;
+        }
+        .tf-indicator {
+            flex: 1 1 0;
+            text-align: center;
+            padding: 1.2rem 0.5rem;
+            border-radius: 20px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+        }
+        .tf-indicator.t {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+        }
+        .tf-indicator.f {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+        .final-review-section {
+            flex: 1 1 0;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 2rem;
+        }
+        .review-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+        .review-tab-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 56px;
+            padding: 0;
+            flex: 1 1 0;
+            min-width: 0;
+            background: transparent;
+            border: none;
+            border-radius: 7px 7px 0 0;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s, background 0.2s;
+        }
+        .review-tab-btn.active {
+            background: transparent;
+            border-bottom: 2px solid #9C27B0;
+            color: #9C27B0;
+            transform: scale(1.12);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+            z-index: 2;
+        }
+        .review-tab-btn:hover {
+            background: transparent;
+            transform: scale(1.12);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+            z-index: 2;
+        }
+        .tab-icon {
+            max-height: 90%;
+            max-width: 90%;
+            object-fit: contain;
+            display: block;
+        }
+        .review-content-box {
+            width: 100%;
+            min-height: 220px;
+            background: transparent;
+            border-radius: 0 0 15px 15px;
+            box-shadow: none;
+            padding: 2rem 1.5rem;
+            font-size: 1.1em;
+            color: #333;
+        }
+        .result-bg-box {
+            position: relative;
+            width: 60vw;
+            max-width: 1000px;
+            aspect-ratio: 16 / 9;
+            margin: 0 auto 2rem auto;
+            border-radius: 30px;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.18);
+            overflow: hidden;
+        }
+        .result-bg-box .bg-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            border-radius: 30px;
+        }
+        .result-bg-box .result-flex-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            padding: 4vw 3vw;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        .container, .final-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="final-page" id="finalPage">
+            <!-- <h1>최종 분석 결과</h1> -->
+            <div id="finalOneLiner"></div>
+            <div class="result-bg-box">
+                <img src="Final/Black_board.png" alt="" class="bg-img">
+                <div class="result-flex-container">
+                    <div class="final-graph-section">
+                        <div id="finalGraph"></div>
+                    </div>
+                    <div class="final-review-section">
+                        <div class="review-tabs">
+                            <button class="review-tab-btn" id="tab-comm"><img src="Final/Effective_white.png" data-hover="Final/Effective_yellow.png" alt="소통법" class="tab-icon"></button>
+                            <button class="review-tab-btn" id="tab-strength"><img src="Final/Yougood_white.png" data-hover="Final/Yougood_yellow.png" alt="강점" class="tab-icon"></button>
+                            <button class="review-tab-btn" id="tab-growth"><img src="Final/Improve_white.png" data-hover="Final/Improve_yellow.png" alt="성장" class="tab-icon"></button>
+                        </div>
+                        <div class="review-content-box" id="reviewContentBox"></div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="location.href='index1.html'" class="start-button">다시 분석하기</button>
+        </div>
+    </div>
+
+    <script>
+        // API 기본 URL 설정
+        const API_BASE_URL = 'http://localhost:8000';
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', async function() {
+            const results = JSON.parse(sessionStorage.getItem('mbtiResults'));
+            if (!results || !results.length) {
+                alert('분석 결과를 찾을 수 없습니다. 처음부터 다시 시작해주세요.');
+                window.location.href = 'index1.html';
+                return;
+            }
+
+            showFinalResult(results);
+        });
+
+        // 최종 결과 표시
+        async function showFinalResult(results) {
+            const averageScore = results.reduce((sum, r) => sum + r.score, 0) / results.length;
+            const tPercentage = Math.round((100 - averageScore) / 10) * 10;
+            const fPercentage = Math.round(averageScore / 10) * 10;
+            
+            // 기본 정보 표시
+            document.getElementById('finalOneLiner').innerHTML = `
+                <div style="position: relative; display: inline-block; margin: 0 auto 2rem auto;">
+                    <img src="Final/White_board.png" alt="분석 결과 이미지" style="display: block; max-width: 100%; height: auto;">
+                    <div style="
+                        position: absolute;
+                        top: 50%; left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 80%;
+                        color: #333;
+                        font-size: 2.2em;
+                        font-weight: bold;
+                        text-align: center;
+                        word-break: keep-all;
+                        line-height: 1.3;
+                        font-family: 'JejuHallasan', sans-serif;
+                        ">
+                        ${getFinalOneLiner(averageScore)}
+                    </div>
+                </div>
+            `;
+            
+            // 그래프 표시 (원형 그래프 상단, T/F 지표 하단 가로)
+            document.getElementById('finalGraph').innerHTML = `
+                <div class="circle-graph-box">
+                    <svg width="220" height="220">
+                        <circle cx="110" cy="110" r="96" fill="none" stroke="#fff" stroke-width="7"/>
+                        <circle cx="110" cy="110" r="74" fill="none" stroke="#fff" stroke-width="7"/>
+                        <circle cx="110" cy="110" r="85" fill="none" stroke="#f0f0f0" stroke-width="22" transform="rotate(-90 110 110)"/>
+                        <circle cx="110" cy="110" r="85" fill="none" stroke="#ff6b6b" stroke-width="22" 
+                                stroke-dasharray="${(100-averageScore) * 5.34} 534" stroke-linecap="round" transform="rotate(-90 110 110)"/>
+                        <circle cx="110" cy="110" r="85" fill="none" stroke="#4ecdc4" stroke-width="22" 
+                                stroke-dasharray="${averageScore * 5.34} 534" 
+                                stroke-dashoffset="${-(100-averageScore) * 5.34}" stroke-linecap="round" transform="rotate(-90 110 110)"/>
+                        <text x="110" y="110" text-anchor="middle" dominant-baseline="middle" font-size="2.2em" font-weight="bold" stroke="#fff" stroke-width="6" paint-order="stroke" fill="#333">${averageScore.toFixed(1)}</text>
+                        <text x="110" y="110" text-anchor="middle" dominant-baseline="middle" font-size="2.2em" font-weight="bold" fill="#333">${averageScore.toFixed(1)}</text>
+                    </svg>
+                </div>
+                <div class="tf-indicator-row">
+                    <div class="tf-indicator f">F-성향</div>
+                    <div class="tf-indicator t">T-성향</div>
+                </div>
+            `;
+            
+            // finalReview는 탭 구조로 대체하므로 초기에는 아무 내용도 표시하지 않음
+            document.getElementById('reviewContentBox').innerHTML = '';
+            
+            try {
+                // AI 종합 분석 요청
+                const response = await fetch(`${API_BASE_URL}/final_analyze`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        results: results
+                    })
+                });
+
+                const finalAnalysis = await response.json();
+                
+                // 탭별 내용 저장
+                const commText = finalAnalysis.communication_strategy.replace(/\n/g, ' ');
+                const commExamples = [];
+                const regex = /"([^"]+)"/g;
+                let match;
+                while ((match = regex.exec(commText)) !== null && commExamples.length < 3) {
+                    commExamples.push('"' + match[1].trim() + '"');
+                }
+                while (commExamples.length < 3) commExamples.push('');
+                const commLines = [
+                    'F 성향 상대와의 효과적인 소통법',
+                    ...commExamples
+                ].slice(0, 4).join('<br>');
+                window.finalReviewTabs = {
+                    comm: `<div style='line-height:1.7; font-size:1.25em; color:#fff; font-weight:bold; white-space:pre-line; font-family: "NanumGyuriDiary", sans-serif;'>${commLines}</div>`,
+                    strength: `<div style='display:flex; flex-wrap:wrap; justify-content:center; text-align:center; gap:0.5rem; margin-top:0.5rem; font-family: "NanumGyuriDiary", sans-serif; font-size:1.25em;'>
+                        ${finalAnalysis.strengths.map(strength => `<span style='display:inline-block; background:linear-gradient(90deg,#ffe066,#ffd700); color:#333; font-weight:bold; border-radius:20px; padding:0.4em 1em; font-size:1em; box-shadow:0 2px 8px rgba(255,224,102,0.15); margin-bottom:0.2em;'>#${strength.replace(/\s+/g, '')}</span>`).join('')}
+                    </div>
+                    <button class="tts-button" onclick="playTTS('당신의 강점은 ${finalAnalysis.strengths.join(", ")} 입니다.')" style="margin-top:1rem; font-family: "NanumGyuriDiary", sans-serif;">🔊 듣기</button>`,
+                    growth: `<ul style='margin:0; padding-left:1.2rem; font-family: "NanumGyuriDiary", sans-serif; font-size:1.25em; color:#fff; font-weight:bold;'>
+                        ${finalAnalysis.growth_areas.map(area => `<li style='margin-bottom:0.5rem; line-height:1.5;'>${area}</li>`).join('')}
+                    </ul>
+                    <button class="tts-button" onclick="playTTS('성장 포인트는 ${finalAnalysis.growth_areas.join(", ")} 입니다.')" style="margin-top:1rem; font-family: "NanumGyuriDiary", sans-serif;">🔊 듣기</button>`
+                };
+                // 탭 이벤트 바인딩
+                const tabBtns = [
+                    {id: 'tab-comm', key: 'comm'},
+                    {id: 'tab-strength', key: 'strength'},
+                    {id: 'tab-growth', key: 'growth'}
+                ];
+                tabBtns.forEach(({id, key}) => {
+                    const btn = document.getElementById(id);
+                    btn.onclick = function() {
+                        tabBtns.forEach(({id:otherId}) => document.getElementById(otherId).classList.remove('active'));
+                        btn.classList.add('active');
+                        document.getElementById('reviewContentBox').innerHTML = window.finalReviewTabs[key];
+                    }
+                });
+                // 초기에는 아무 탭도 선택하지 않음
+                document.getElementById('reviewContentBox').innerHTML = '';
+                
+            } catch (error) {
+                console.error('Error fetching final analysis:', error);
+                document.getElementById('reviewContentBox').innerHTML = `<div style='background: #f8d7da; padding: 2rem; border-radius: 15px; border-left: 5px solid #dc3545; color: #721c24;'><h3 style='margin-top:0;'>⚠️ 분석 오류</h3><p>종합 분석 중 오류가 발생했습니다. 기본 분석 결과를 표시합니다.</p><div style='margin-top:1rem;'>${getFinalReview(averageScore)}</div></div>`;
+            }
+        }
+
+        // 최종 한 줄 평가 생성
+        function getFinalOneLiner(score) {
+            if (score < 20) return "냉철한 논리 머신! 감정? 그게 뭔가요?";
+            if (score <= 40) return "팩트 폭격기! 데이터가 곧 진리죠?";
+            if (score >= 41 && score <= 59) return "논리와 감정의 줄타기 달인! 양다리 고수네요~";
+            if (score < 80) return "감정 공감 레이더! 눈물 한 방울도 놓치지 않죠?";
+            return "완전 감성팩토리! 드라마 보다가 티슈 몇 박스 써요?";
+        }
+
+        // 최종 리뷰 생성
+        function getFinalReview(score) {
+            let review = "";
+            if (score < 20) {
+                review = `
+                    <p>당신은 매우 논리적이고 객관적인 판단을 선호합니다.</p>
+                    <p>감정보다는 사실과 논리에 기반하여 결정을 내리는 경향이 강합니다.</p>
+                    <p>문제 해결 능력이 뛰어나며, 효율적인 의사결정을 잘 하실 것 같네요.</p>
+                `;
+            } else if (score < 40) {
+                review = `
+                    <p>논리적 사고를 바탕으로 하되, 감정적 요소도 고려하시는 편입니다.</p>
+                    <p>객관적 판단을 중시하지만, 상황에 따라 유연한 대처도 가능하십니다.</p>
+                    <p>균형 잡힌 사고방식을 가지고 있으나, T 성향이 조금 더 강합니다.</p>
+                `;
+            } else if (score < 60) {
+                review = `
+                    <p>논리와 감정 사이에서 훌륭한 균형을 이루고 계십니다.</p>
+                    <p>상황에 따라 객관적 판단과 감정적 공감을 적절히 사용하시는 것 같네요.</p>
+                    <p>다양한 관점에서 문제를 바라볼 수 있는 능력이 있습니다.</p>
+                `;
+            } else if (score < 80) {
+                review = `
+                    <p>감정적 공감 능력이 뛰어나며, 다른 사람의 감정을 잘 이해하십니다.</p>
+                    <p>논리적 판단도 가능하지만, 감정적 요소를 더 중요하게 고려하시는 편입니다.</p>
+                    <p>인간관계에서 뛰어난 능력을 발휘하실 것 같네요.</p>
+                `;
+            } else {
+                review = `
+                    <p>매우 뛰어난 감정적 공감 능력을 가지고 계십니다.</p>
+                    <p>다른 사람의 감정을 깊이 이해하고 배려하는 성향이 매우 강합니다.</p>
+                    <p>인간관계에서 탁월한 능력을 보여주실 것 같네요.</p>
+                `;
+            }
+            return review;
+        }
+
+        // TTS 기능
+        async function playTTS(text) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/tts?text=${encodeURIComponent(text)}`, {
+                    method: 'POST'
+                });
+
+                if (!response.ok) throw new Error('TTS 처리 중 오류가 발생했습니다.');
+
+                const blob = await response.blob();
+                const audio = new Audio(URL.createObjectURL(blob));
+                audio.play();
+            } catch (error) {
+                console.error('TTS Error:', error);
+                alert('음성 재생 중 오류가 발생했습니다.');
+            }
+        }
+    </script>
+    <script>
+        // 탭 버튼 이미지 hover/active 시 이미지 변경 및 active 관리
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.review-tab-btn');
+            tabBtns.forEach(btn => {
+                const img = btn.querySelector('img');
+                if (!img) return;
+                const orig = img.getAttribute('src');
+                const hover = img.getAttribute('data-hover');
+                if (!hover) return;
+
+                // Hover 효과
+                btn.addEventListener('mouseenter', () => {
+                    img.src = hover;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    if (!btn.classList.contains('active')) img.src = orig;
+                });
+
+                // 클릭 시 active 관리 및 이미지 변경
+                btn.addEventListener('click', () => {
+                    tabBtns.forEach(b => {
+                        b.classList.remove('active');
+                        const i = b.querySelector('img');
+                        if (i) i.src = i.getAttribute('src');
+                    });
+                    btn.classList.add('active');
+                    img.src = hover;
+                });
+            });
+
+            // 최초 활성화 탭 이미지도 hover로
+            const activeBtn = document.querySelector('.review-tab-btn.active');
+            if (activeBtn) {
+                const img = activeBtn.querySelector('img');
+                const hover = img && img.getAttribute('data-hover');
+                if (img && hover) img.src = hover;
+            }
+        });
+        </script>
+</body>
+</html> 

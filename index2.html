@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI T/F 분석기 - 질문</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: #f7f7f7;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: url('images/Bg1.png'); /* 전체 배경 이미지 */
+            background-size: cover;
+            background-position: center;
+        }
+        .question-bar {
+            width: 100vw;
+            min-width: 100vw;
+            max-width: 100vw;
+            height: 150px;
+            margin: 0 auto 0 auto;
+            background: url('images/textbar1.png') no-repeat center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #111;
+            text-align: center;
+            box-sizing: border-box;
+            border: none;
+            box-shadow: none;
+            background-color: transparent;
+            padding: 0;
+        }
+        .character-center {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 350px;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            padding-top: 60px;
+        }
+        .character {
+            width: 360px;
+            height: 360px;
+            margin: 0 auto 1.5rem auto;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .face {
+            width: 360px;
+            height: 360px;
+            position: relative;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .face-very-angry {
+            background-image: url('images/Very_angry.png');
+        }
+        .face-angry {
+            background-image: url('images/Simple_angry.png');
+        }
+        .face-neutral {
+            background-image: url('images/Base.png');
+        }
+        .face-happy {
+            background-image: url('images/Simple_happy.png');
+        }
+        .face-very-happy {
+            background-image: url('images/Very_happy.png');
+        }
+        #resultGraph {
+            margin-top: 1.5rem;
+            background-image: url('images/report_bg.png'); /* 결과 리포트 박스 배경 */
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            padding: 1.5rem;
+        }
+        .answer-bar {
+            width: 100%;
+            background: #fff;
+            border-top: 2px solid #2196F3;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            left: 0;
+            bottom: 80px; /* 하단에서 80px 위로 띄움 */
+            z-index: 10;
+            box-shadow: 0 -2px 8px rgba(33,150,243,0.07);
+            background-image: url('images/textbar2.png'); /* 하단 입력 박스 배경 */
+            background-size: auto;
+            background-position: center;
+            height: auto;
+        }
+        .answer-input {
+            flex: 1 1 auto;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            margin-right: 1rem;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: row;
+            gap: 0.7rem;
+        }
+        .submit-button, .stt-button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .submit-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .submit-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+        .stt-button {
+            background-color: #E91E63;
+            color: white;
+        }
+        .stt-button:hover {
+            background-color: #C2185B;
+            transform: scale(1.05);
+        }
+        .review-icon {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background-color: #2196F3;
+            border-radius: 50%;
+            cursor: pointer;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            z-index: 20;
+            font-size: 2rem;
+        }
+        @media (max-width: 600px) {
+            .character {
+                width: 160px;
+                height: 160px;
+            }
+            .face {
+                width: 160px;
+                height: 160px;
+            }
+            .answer-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .answer-input {
+                margin-right: 0;
+                margin-bottom: 0.7rem;
+            }
+            .button-group {
+                flex-direction: row;
+                justify-content: flex-end;
+            }
+        }
+    .textbar-container {
+        position: fixed;
+        left: 0;
+        bottom: 80px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: none; /* 입력창만 클릭 가능하게 */
+        z-index: 20;
+        /* 내부 절대배치용 */
+        flex-direction: column;
+    }
+    .textbar-bg {
+        display: block;
+        max-width: 600px;
+        width: 100%;
+        height: auto;
+        pointer-events: none;
+    }
+    .answer-input-on-image {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: calc(100% - 120px); /* 좌우 여백 60px씩 */
+        max-width: 480px;
+        min-width: 180px;
+        padding: 0.8rem 1rem;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        background: rgba(255,255,255,0.85);
+        pointer-events: auto;
+        z-index: 2;
+        box-sizing: border-box;
+    }
+    .button-group-on-image {
+        position: absolute;
+        right: 30px;
+        bottom: 18px;
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        pointer-events: auto;
+        z-index: 3;
+    }
+    .button-group-on-image .submit-button, .button-group-on-image .stt-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        opacity: 0.95;
+    }
+    .button-group-on-image .submit-button {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .button-group-on-image .submit-button:hover {
+        background-color: #45a049;
+        transform: scale(1.05);
+    }
+    .button-group-on-image .stt-button {
+        background-color: #E91E63;
+        color: white;
+    }
+    .button-group-on-image .stt-button:hover {
+        background-color: #C2185B;
+        transform: scale(1.05);
+    }
+    @media (max-width: 700px) {
+        .textbar-bg {
+            max-width: 98vw;
+        }
+        .answer-input-on-image {
+            width: 70vw;
+            max-width: 95vw;
+        }
+        .button-group-on-image {
+            right: 10px;
+            bottom: 10px;
+        }
+    }
+    .textbar-fixed-wrapper {
+        position: fixed;
+        left: 50%;
+        bottom: 40px;
+        transform: translateX(-50%);
+        width: 1212px;
+        height: 217px;
+        z-index: 20;
+        display: block;
+    }
+    .textbar-bg {
+        width: 1212px;
+        height: 217px;
+        display: block;
+    }
+    .answer-input-on-image {
+        position: absolute;
+        left: 60px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 800px;
+        height: 60px;
+        font-size: 1.3rem;
+        border: 2px solid #ddd;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.85);
+        z-index: 2;
+        box-sizing: border-box;
+        padding: 1rem 1.2rem;
+    }
+    .button-group-on-image {
+        position: absolute;
+        right: 60px;
+        bottom: 32px;
+        display: flex;
+        gap: 1rem;
+        z-index: 3;
+    }
+    .button-group-on-image .submit-button,
+    .button-group-on-image .stt-button {
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        opacity: 0.95;
+    }
+    .button-group-on-image .submit-button { background: #4CAF50; color: #fff; }
+    .button-group-on-image .submit-button:hover { background: #45a049; }
+    .button-group-on-image .stt-button { background: #E91E63; color: #fff; }
+    .button-group-on-image .stt-button:hover { background: #C2185B; }
+    .answer-image-bar-wrapper {
+        position: fixed;
+        left: 50%;
+        bottom: 40px;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        z-index: 20;
+    }
+    .answer-input-image-bg {
+        width: 600px;
+        height: 120px;
+        font-size: 1.3rem;
+        border: none;
+        border-radius: 0;
+        background: url('images/textbar2.png') no-repeat center/cover;
+        color: #222;
+        padding: 0 40px;
+        box-sizing: border-box;
+        outline: none;
+        /* placeholder 스타일 */
+    }
+    .answer-input-image-bg::placeholder {
+        color: #888;
+        font-size: 1.2rem;
+        opacity: 1;
+    }
+    .button-group-inline {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        margin-left: 20px;
+    }
+    .button-group-inline .submit-button,
+    .button-group-inline .stt-button {
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        opacity: 0.95;
+    }
+    .button-group-inline .submit-button { background: #4CAF50; color: #fff; }
+    .button-group-inline .submit-button:hover { background: #45a049; }
+    .button-group-inline .stt-button { background: #E91E63; color: #fff; }
+    .button-group-inline .stt-button:hover { background: #C2185B; }
+    .detail-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    .detail-btn-img {
+        width: 40px;
+        height: auto;
+        display: block;
+    }
+    .detail-modal-content {
+        background: url('images/note.png') no-repeat center center !important;
+        background-size: cover !important;
+        border-radius: 16px;
+        max-width: 340px;
+        margin: 60px auto;
+        padding: 1.2em;
+        box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+        position: relative;
+        font-size: 0.95em;
+    }
+    .main-result-text {
+        color: rgb(254,157,41);
+        font-size: 1.2em;
+        font-weight: bold;
+        text-shadow: 1.5px 1.5px 0 rgb(0, 0, 0);
+    }
+    </style>
+</head>
+<body>
+    <div class="question-bar" id="questionBar">
+        <div id="question">질문을 불러오는 중...</div>
+    </div>
+    <div class="character-center">
+        <div class="character">
+            <div class="face face-neutral" id="characterFace"></div>
+        </div>
+        <div id="resultGraph" style="display: none;"></div>
+    </div>
+    <!-- 이미지 UI박스 안에 입력창, 제출, 음성 버튼 -->
+    <div class="uibox-bg">
+        <input type="text" class="uibox-input" id="answerInput" placeholder="답변을 입력하세요...">
+        <button class="submit-button" id="submitButton" onclick="submitAnswer()">
+            <img src="images/button2.png" alt="제출" class="btn-img">
+            <span class="btn-label">제출</span>
+        </button>
+        <button class="stt-button" id="sttButton" onclick="startSTT()">
+            <img src="images/mic.png" alt="음성 입력" class="btn-img">
+        </button>
+    </div>
+
+    <style>
+    .uibox-bg {
+        width: 800px;
+        min-height: 150px;
+        height: auto;
+        max-width: 90vw;
+        background: url('images/textbar2.png') no-repeat center/contain;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        z-index: 20;
+        box-sizing: border-box;
+        padding: 0 40px;
+        overflow: visible;
+        position: fixed;
+        left: 50%;
+        bottom: 40px;
+        transform: translateX(-50%);
+    }
+    .result-content {
+        width: 100%;
+        text-align: center;
+        padding: 1.2rem 0.5rem;
+        box-sizing: border-box;
+        overflow-x: auto;
+        word-break: break-all;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .uibox-input {
+        flex: 1 1 0;
+        height: 60px;
+        font-size: 1.2rem;
+        border: none;
+        background: transparent !important;
+        color: #fff;
+        padding: 0 24px;
+        outline: none;
+    }
+    .uibox-input::placeholder {
+        color: #888;
+        font-size: 1.1rem;
+        opacity: 1;
+    }
+    .submit-button .btn-img,
+    .stt-button .btn-img {
+        height: 48px;
+        width: auto;
+        display: block;
+        object-fit: contain;
+    }
+    .submit-button {
+        position: relative;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+    .submit-button .btn-label {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: bold;
+        pointer-events: none;
+        text-shadow: 0 1px 4px #000, 0 0 2px #000;
+        white-space: nowrap;
+    }
+    .stt-button {
+        background: none !important;
+        border: none;
+    }
+    .detail-btn {
+        position: absolute;
+        right: -60px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .detail-btn-img {
+        width: 40px;
+        height: auto;
+        display: block;
+    }
+    .next-btn {
+        position: static;
+        margin-top: 0.7em;
+        margin-bottom: 0;
+        margin-right: calc(50vw - 400px);
+        margin-left: auto;
+        padding: 0.8em 2.5em;
+        font-size: 1.1em;
+        border-radius: 8px;
+        border: none;
+        background: #2196F3;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: block;
+    }
+    .next-btn:hover {
+        background: #1976D2;
+    }
+    </style>
+    <input type="file" id="audioInput" accept="audio/*" style="display: none;" onchange="handleAudioFile(this.files[0])">
+    <div id="loadingMessage" style="display:none; color:#2196F3; font-weight:bold; margin-top:1rem;">
+        <span id="loadingText">AI가 분석중입니다</span><span id="loadingDots"></span>
+    </div>
+    <div class="review-icon" id="reviewIcon" onclick="showReview()">��</div>
+    <!-- 리뷰 모달 -->
+    <div class="modal" id="reviewModal" onclick="closeReview()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2>답변 리뷰</h2>
+            <div id="reviewContent"></div>
+            <button onclick="closeReview()" class="start-button" style="margin-top: 1rem;">닫기</button>
+        </div>
+    </div>
+    <script>
+        // API 기본 URL 설정
+        const API_BASE_URL = 'http://localhost:8000';
+        // 임시 기본 질문 데이터
+        const DEFAULT_QUESTIONS = [
+            '당신이 최근에 내린 가장 큰 결정은 무엇인가요?',
+            '친구가 고민을 털어놓을 때 당신의 첫 반응은?',
+            '문제가 생겼을 때 어떻게 해결하려고 하나요?',
+            '감정이 격해질 때 주로 어떻게 대처하나요?',
+            '중요한 선택을 할 때 무엇을 가장 우선시하나요?'
+        ];
+        // 전역 변수
+        let currentCount = 0;
+        let maxCount = 0;
+        let results = [];
+        let usedQuestions = new Set();
+        let questions = [];
+        // 전역 변수 추가
+        let lastResultData = null;
+
+        // API 서버 상태 체크 함수
+        async function checkApiServer() {
+            try {
+                // /questions 엔드포인트로 간단한 GET 요청 (ping 용도)
+                const res = await fetch(`${API_BASE_URL}/questions?use_ai=false`, { method: 'GET' });
+                return res.ok;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', async function() {
+            let settings = null;
+            try {
+                settings = JSON.parse(sessionStorage.getItem('mbtiSettings'));
+            } catch (e) {
+                settings = null;
+            }
+            // API 서버 상태 먼저 확인
+            const apiAlive = await checkApiServer();
+            if (!apiAlive) {
+                alert('질문 서버(API)가 꺼져 있습니다. 기본 질문으로 진행합니다.\n(서버를 실행하려면 백엔드를 먼저 켜주세요)');
+                maxCount = DEFAULT_QUESTIONS.length;
+                questions = [...DEFAULT_QUESTIONS];
+                initCharacter();
+                showNextQuestion();
+                return;
+            }
+            if (!settings) {
+                maxCount = DEFAULT_QUESTIONS.length;
+                questions = [...DEFAULT_QUESTIONS];
+                initCharacter();
+                showNextQuestion();
+                return;
+            }
+            maxCount = parseInt(settings.count) || DEFAULT_QUESTIONS.length;
+            initCharacter();
+            loadQuestions(settings);
+        });
+
+        // 질문 데이터 로드
+        async function loadQuestions(settings) {
+            try {
+                let url = `${API_BASE_URL}/questions`;
+                let params = new URLSearchParams();
+                if (settings.questionSource === 'ai') {
+                    params.append('use_ai', 'true');
+                    // difficulty와 count에 기본값 설정
+                    const difficulty = settings.difficulty || 'medium';
+                    const count = settings.questionCount || 5;
+                    params.append('difficulty', difficulty);
+                    params.append('count', count);
+                } else {
+                    params.append('use_ai', 'false');
+                }
+                const response = await fetch(`${url}?${params}`);
+                if (!response.ok) throw new Error('API 응답 오류');
+                const data = await response.json();
+                if (!data.questions || !Array.isArray(data.questions) || data.questions.length === 0) {
+                    throw new Error('질문 데이터 없음');
+                }
+                questions = data.questions;
+                showNextQuestion();
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                // 실패 시 기본 질문 사용
+                questions = [...DEFAULT_QUESTIONS];
+                maxCount = DEFAULT_QUESTIONS.length;
+                showNextQuestion();
+            }
+        }
+
+        // 캐릭터 초기화
+        function initCharacter() {
+            const character = document.getElementById('characterFace');
+            if (character) {
+                character.className = 'face face-neutral';
+            }
+            document.querySelector('.character-center').style.paddingTop = '100px';
+        }
+
+        // 표정 변경
+        function updateCharacterExpression(score) {
+            const face = document.getElementById('characterFace');
+            if (face) {
+                face.className = 'face';
+                if (score < 20) face.classList.add('face-very-angry');
+                else if (score < 40) face.classList.add('face-angry');
+                else if (score < 60) face.classList.add('face-neutral');
+                else if (score < 80) face.classList.add('face-happy');
+                else face.classList.add('face-very-happy');
+            }
+            document.querySelector('.character-center').style.paddingTop = '60px';
+        }
+
+        // 랜덤 질문 선택
+        function getRandomQuestion() {
+            const availableQuestions = questions.filter((_, index) => !usedQuestions.has(index));
+            if (availableQuestions.length === 0) {
+                usedQuestions.clear();
+                return questions[Math.floor(Math.random() * questions.length)];
+            }
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            const questionIndex = questions.findIndex(q => q === availableQuestions[randomIndex]);
+            usedQuestions.add(questionIndex);
+            return availableQuestions[randomIndex];
+        }
+
+        // 다음 질문 표시
+        function showNextQuestion() {
+            document.querySelector('.character-center').style.paddingTop = '100px';
+            const question = getRandomQuestion();
+            document.getElementById('question').textContent = question;
+            document.getElementById('answerInput').value = '';
+            document.getElementById('answerInput').disabled = false;
+            document.getElementById('resultGraph').style.display = 'none';
+            document.getElementById('reviewIcon').style.display = 'none';
+            document.querySelector('.submit-button').disabled = false;
+            document.querySelector('.submit-button').style.opacity = '1';
+        }
+
+        // 답변 제출
+        async function submitAnswer() {
+            const answer = document.getElementById('answerInput').value.trim();
+            if (!answer) {
+                alert('답변을 입력해주세요.');
+                return;
+            }
+
+            document.getElementById('loadingMessage').style.display = 'block';
+            startLoadingDots();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/analyze`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: answer })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API 호출 실패');
+                }
+
+                const data = await response.json();
+                results.push({
+                    question: document.getElementById('question').textContent,
+                    answer: answer,
+                    score: data.score,
+                    detailed_analysis: data.detailed_analysis,
+                    reasoning: data.reasoning,
+                    suggestions: data.suggestions,
+                    alternative_response: data.alternative_response
+                });
+                lastResultData = data; // 전역 변수에 저장
+                showResult(data); // tfScore가 아니라 data 전체를 넘김
+            } catch (error) {
+                console.error('Error:', error);
+                alert('분석 중 오류가 발생했습니다. 다시 시도해주세요.');
+                document.getElementById('loadingMessage').style.display = 'none';
+                stopLoadingDots();
+            }
+        }
+
+        // showResult 함수 수정
+        function showResult(data) {
+            let tfScore = Number(data.score);
+            if (isNaN(tfScore)) {
+                alert('분석 결과 점수가 올바르지 않습니다. 기본값으로 표시합니다.');
+                tfScore = 50;
+            }
+            // 분석 끝났으니 로딩 메시지 숨김
+            document.getElementById('loadingMessage').style.display = 'none';
+            // 점수에 따라 캐릭터 표정 업데이트
+            updateCharacterExpression(tfScore);
+            const uibox = document.querySelector('.uibox-bg');
+            const tPercentage = 100 - tfScore;
+            const fPercentage = tfScore;
+            let resultText = '';
+            if (tfScore < 20) resultText = `당신은 확실한 T입니다! "너 T발C야?" (T: ${tPercentage}% / F: ${fPercentage}%)`;
+            else if (tfScore <= 40) resultText = `당신은 T 성향이 강합니다. (T: ${tPercentage}% / F: ${fPercentage}%)`;
+            else if (tfScore >= 41 && tfScore <= 59) resultText = `당신은 T와 F의 균형이 잘 잡혀있습니다. (T: ${tPercentage}% / F: ${fPercentage}%)`;
+            else if (tfScore < 80) resultText = `당신은 F 성향이 강합니다. (T: ${tPercentage}% / F: ${fPercentage}%)`;
+            else resultText = `당신은 확실한 F입니다! "너 F구나?" (T: ${tPercentage}% / F: ${fPercentage}%)`;
+            uibox.innerHTML = `
+                <div class="result-content">
+                    <p class="main-result-text">${resultText}</p>
+                    <div style="position: relative; width: 80%; margin: 1.2rem auto;">
+                        <div style="width: 100%; height: 24px; background: linear-gradient(to right, #ff4444, #ffff44, #44ff44); border-radius: 12px; position: relative;">
+                            <div style="width: 3px; height: 32px; background: black; position: absolute; left: ${tfScore}%; top: -4px;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 1em;">
+                            <div style="text-align: left; width: 45%; background: rgba(255,68,68,0.08); padding: 6px; border-radius: 8px;">
+                                <span style="font-weight: bold; color: #ff4444;">Thinking: ${tPercentage}%</span>
+                            </div>
+                            <div style="text-align: right; width: 45%; background: rgba(68,255,68,0.08); padding: 6px; border-radius: 8px;">
+                                <span style="font-weight: bold; color: #44ff44;">Feeling: ${fPercentage}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="detail-btn" onclick="showDetailAnalysis()">
+                        <img src="Question_pg/note_button.png" alt="상세 분석 보기" class="detail-btn-img">
+                    </button>
+                </div>
+            `;
+            // '다음' 또는 '결과' 버튼을 .uibox-bg(박스) 밖 note_button 아래에 오른쪽 정렬로 추가
+            let nextBtn = document.querySelector('.next-btn');
+            if (!nextBtn) {
+                nextBtn = document.createElement('button');
+                nextBtn.className = 'next-btn';
+                document.querySelector('.uibox-bg').after(nextBtn);
+            }
+            // 버튼 텍스트 및 동작 설정
+            if (currentCount + 1 >= maxCount) {
+                nextBtn.textContent = '결과';
+                nextBtn.onclick = goToResultPage;
+            } else {
+                nextBtn.textContent = '다음';
+                nextBtn.onclick = nextQuestion;
+            }
+            nextBtn.style.display = 'block';
+        }
+
+        // 다음 질문으로 이동
+        function nextQuestion() {
+            currentCount++;
+            // 결과창/버튼 숨기고, 입력창/질문/캐릭터 등 초기화
+            // 입력창, 질문, 캐릭터 등 index2의 기본 UI로 복구
+            // uibox-bg를 원래 입력창 UI로 복원
+            const uibox = document.querySelector('.uibox-bg');
+            uibox.innerHTML = `
+                <input type="text" class="uibox-input" id="answerInput" placeholder="답변을 입력하세요...">
+                <button class="submit-button" id="submitButton" onclick="submitAnswer()">
+                    <img src="images/button2.png" alt="제출" class="btn-img">
+                    <span class="btn-label">제출</span>
+                </button>
+                <button class="stt-button" id="sttButton" onclick="startSTT()">
+                    <img src="images/mic.png" alt="음성 입력" class="btn-img">
+                </button>
+            `;
+            // 다음 버튼 숨기기
+            let nextBtn = document.querySelector('.next-btn');
+            if (nextBtn) nextBtn.style.display = 'none';
+            // 캐릭터 표정 초기화
+            initCharacter();
+            // 다음 질문 표시
+            showNextQuestion();
+        }
+
+        // 결과 페이지로 이동
+        function goToResultPage() {
+            // 결과를 세션 스토리지에 저장
+            sessionStorage.setItem('mbtiResults', JSON.stringify(results));
+            // 최종 결과 페이지로 이동
+            window.location.href = 'index3.html';
+        }
+
+        // 리뷰 표시
+        function showReview() {
+            const modal = document.getElementById('reviewModal');
+            const content = document.getElementById('reviewContent');
+            const idx = results.length - 1;
+            
+            if (!results || results.length === 0 || idx < 0) {
+                content.innerHTML = `
+                    <div class="review-section">
+                        <h3>리뷰 없음</h3>
+                        <p>아직 분석된 답변이 없습니다. 먼저 질문에 답변해주세요.</p>
+                    </div>
+                `;
+                modal.style.display = 'block';
+                return;
+            }
+
+            const currentResult = results[idx];
+            if (!currentResult || !currentResult.question || !currentResult.answer) {
+                content.innerHTML = `
+                    <div class="review-section">
+                        <h3>데이터 오류</h3>
+                        <p>결과 데이터에 문제가 있습니다. 페이지를 새로고침하고 다시 시도해주세요.</p>
+                    </div>
+                `;
+                modal.style.display = 'block';
+                return;
+            }
+
+            content.innerHTML = `
+                <div class="review-section">
+                    <h3>T/F 분석</h3>
+                    <p><strong>질문:</strong> ${currentResult.question}</p>
+                    <p><strong>답변:</strong> ${currentResult.answer}</p>
+                    <div style="margin-top: 1rem;">
+                        <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">💬 F 성향 상대를 위한 답변 제안</h4>
+                        <div style="background: #e8f5e8; padding: 1rem; border-radius: 8px; border-left: 4px solid #28a745; line-height: 1.6;">
+                            ${(() => {
+                                const alt = (currentResult.alternative_response || '').replace(/\n/g, '<br>');
+                                const firstLine = alt.split('<br>')[0];
+                                const rest = alt.split('<br>').slice(1).join('<br>');
+                                return `<div style='font-weight:bold; color:#ff0000; margin-bottom:0.5em;'>${firstLine}</div>` + (rest ? `<div>${rest}</div>` : '');
+                            })()}
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">📋 상세 분석</h4>
+                        <p style="line-height: 1.6; background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            ${currentResult.detailed_analysis}
+                        </p>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">🔍 분석 근거</h4>
+                        <p style="line-height: 1.6; background: #fff3cd; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            ${currentResult.reasoning}
+                        </p>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">💡 개선 제안</h4>
+                        <ul style="background: #d1ecf1; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            ${(currentResult.suggestions || []).map(suggestion => `<li style="margin-bottom: 0.5rem;">${suggestion}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            modal.style.display = 'block';
+        }
+
+        // 리뷰 닫기
+        function closeReview() {
+            document.getElementById('reviewModal').style.display = 'none';
+        }
+
+        // 로딩 점 애니메이션
+        let loadingInterval = null;
+        function startLoadingDots() {
+            const dots = document.getElementById('loadingDots');
+            let count = 0;
+            if (loadingInterval) clearInterval(loadingInterval);
+            loadingInterval = setInterval(() => {
+                count = (count + 1) % 4;
+                dots.textContent = '.'.repeat(count === 0 ? 3 : count);
+            }, 400);
+        }
+        function stopLoadingDots() {
+            if (loadingInterval) clearInterval(loadingInterval);
+            document.getElementById('loadingDots').textContent = '';
+        }
+
+        // STT 기능
+        function startSTT() {
+            document.getElementById('audioInput').click();
+        }
+
+        async function handleAudioFile(file) {
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('audio_file', file);
+
+            try {
+                console.log('Sending audio file to server...');
+                const response = await fetch(`${API_BASE_URL}/stt`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                console.log('Server response status:', response.status);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server error:', errorText);
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+
+                const result = await response.json();
+                console.log('Server response:', result);
+                
+                if (result && result.text) {
+                    document.getElementById('answerInput').value = result.text;
+                } else {
+                    throw new Error('음성 인식 결과가 없습니다.');
+                }
+            } catch (error) {
+                console.error('STT Error:', error);
+                alert('음성 인식 중 오류가 발생했습니다: ' + error.message);
+            }
+        }
+
+        // TTS 기능
+        async function playTTS(text) {
+            try {
+                const formData = new FormData();
+                formData.append('text', text);
+                
+                const response = await fetch(`${API_BASE_URL}/tts`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+
+                const blob = await response.blob();
+                const audio = new Audio(URL.createObjectURL(blob));
+                audio.play();
+            } catch (error) {
+                console.error('TTS Error:', error);
+                alert('음성 재생 중 오류가 발생했습니다: ' + error.message);
+            }
+        }
+
+        // 분석 결과에 TTS 버튼 추가
+        function showAnalysisResult(result) {
+            const resultGraph = document.getElementById('resultGraph');
+            resultGraph.style.display = 'block';
+            resultGraph.innerHTML = `
+                <div style="margin: 1rem 0;">
+                    <strong>분석 결과:</strong> 
+                    <span>${result.score.toFixed(1)}점</span>
+                    <button class="tts-button" onclick="playTTS('분석 결과는 ${result.score.toFixed(1)}점 입니다. ${result.detailed_analysis || ''}')" style="margin-left: 1rem;">
+                        🔊 듣기
+                    </button>
+                </div>
+                ${result.detailed_analysis ? `<div style="margin: 0.5rem 0;">${result.detailed_analysis}</div>` : ''}
+                ${result.alternative_response ? `<div style="margin: 0.5rem 0; color: #666;">${result.alternative_response}</div>` : ''}
+            `;
+        }
+
+        // 상세분석 모달 함수 추가
+        function showDetailAnalysis() {
+            if (!lastResultData) return;
+            const modal = document.createElement('div');
+            modal.className = 'detail-modal';
+            modal.innerHTML = `
+                <div class="detail-modal-content" style="background:#fff; border-radius:16px; max-width:500px; margin:100px auto; padding:2em; box-shadow:0 4px 32px rgba(0,0,0,0.18); position:relative;">
+                    <h4 style="margin-bottom:0.7em;">상세 분석</h4>
+                    <div style="margin-bottom:1.2em;">${lastResultData.detailed_analysis || ''}</div>
+                    <h4 style="margin-bottom:0.7em;">분석 근거</h4>
+                    <div style="margin-bottom:1.2em;">${lastResultData.reasoning || ''}</div>
+                    <h4 style="margin-bottom:0.7em;">개선 제안</h4>
+                    <ul style="margin-bottom:1.2em;">${(lastResultData.suggestions || []).map(s => `<li>${s}</li>`).join('')}</ul>
+                    <button onclick="closeDetailModal()" style="margin-top:1em; padding:0.5em 1.5em; border-radius:8px; border:none; background:#1976D2; color:#fff; cursor:pointer;">닫기</button>
+                </div>
+            `;
+            Object.assign(modal.style, {
+                position: 'fixed', left: 0, top: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.35)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center'
+            });
+            modal.onclick = function(e) { if (e.target === modal) closeDetailModal(); };
+            document.body.appendChild(modal);
+        }
+        function closeDetailModal() {
+            const modal = document.querySelector('.detail-modal');
+            if (modal) modal.remove();
+        }
+    </script>
+</body>
+</html> 

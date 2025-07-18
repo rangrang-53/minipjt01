@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI T/F 분석기 - 시작</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        body {
+            background-image: url('Main_pg/bg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        /* 인트로 페이지 스타일 */
+        .intro-page {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .count-selection {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .settings-box {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 3rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 16px;
+            padding: 2rem 3rem;
+            margin-bottom: 2rem;
+        }
+        .setting-group {
+            margin: 0;
+            /* padding: 1.5rem 2rem; */
+            /* background: rgba(255,255,255,0.85); */
+            /* border-radius: 12px; */
+            /* box-shadow: 0 2px 8px rgba(0,0,0,0.04); */
+            min-width: 0;
+        }
+
+        .setting-group h3 {
+            margin: 0 0 1rem 0;
+            color: #333;
+            font-size: 1.1rem;
+        }
+        .setting-title {
+            font-size: 2rem;
+            color: #fff;
+            font-weight: bold;
+            -webkit-text-stroke: 1px #222;
+            text-stroke: 1px #222;
+        }
+        .setting-label {
+            font-size: 1rem;
+            color: #fff;
+        }
+        .vertical-radio-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="intro-page" id="introPage">
+            <img src="Main_pg/youT_logo.png" alt="로고" style="width:400px; margin-bottom:1rem;">
+            <!-- main-title 삭제 -->
+            <!-- 시작 버튼 제거 -->
+            <div class="count-selection" id="countSelection">
+                <div class="settings-box">
+                    <!-- 분석 횟수 선택 -->
+                    <div class="setting-group">
+                        <h3 class="setting-title">
+                            분석 횟수
+                        </h3>
+                        <div class="radio-group">
+                            <label class="radio-label setting-label">
+                                <input type="radio" name="count" value="1" checked> 1회
+                            </label>
+                            <label class="radio-label setting-label">
+                                <input type="radio" name="count" value="3"> 3회
+                            </label>
+                            <label class="radio-label setting-label">
+                                <input type="radio" name="count" value="5"> 5회
+                            </label>
+                        </div>
+                    </div>
+                    <!-- 질문 소스 선택 -->
+                    <div class="setting-group">
+                        <h3 class="setting-title">
+                            질문 타입
+                        </h3>
+                        <div class="radio-group vertical-radio-group">
+                            <label class="radio-label setting-label">
+                                <input type="radio" name="questionSource" value="default" checked> 인터넷 밈(json하드코딩)
+                            </label>
+                            <label class="radio-label setting-label">
+                                <input type="radio" name="questionSource" value="ai"> AI 맞춤형(Gemini 연동) 
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <button class="start-button" onclick="startAnalysis()" style="margin-top: 1rem; background:none; border:none;">
+                    <img src="Main_pg/Start_Button.png" alt="분석 시작" style="height:80px; vertical-align:middle;">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API 기본 URL 설정
+        const API_BASE_URL = 'http://localhost:8000';
+
+        // 시작 버튼 클릭 시
+        // function showCountSelection() {
+        //     document.getElementById('startButton').style.display = 'none';
+        //     document.getElementById('countSelection').style.display = 'block';
+        // }
+
+        // 새로운 AI 질문 생성 (기본값 사용)
+        async function generateNewQuestions(questionCount) {
+            const defaultSettings = {
+                count: questionCount,  // 선택된 분석 횟수만큼 질문 생성
+                difficulty: 'medium'  // 기본 보통 난이도
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/generate_questions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(defaultSettings)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('AI 질문 생성 실패');
+                }
+                
+                const data = await response.json();
+                return data;
+                
+            } catch (error) {
+                console.error('Error generating questions:', error);
+                alert('AI 질문 생성 중 오류가 발생했습니다. 다시 시도해주세요.');
+                return null;
+            }
+        }
+
+        // 분석 시작
+        async function startAnalysis() {
+            const selectedCount = document.querySelector('input[name="count"]:checked');
+            if (!selectedCount) {
+                alert('횟수를 선택해주세요.');
+                return;
+            }
+
+            const selectedSource = document.querySelector('input[name="questionSource"]:checked');
+            if (!selectedSource) {
+                alert('질문 타입을 선택해주세요.');
+                return;
+            }
+
+            // AI 질문이 선택된 경우 새로운 질문 생성
+            if (selectedSource.value === 'ai') {
+                const questions = await generateNewQuestions(parseInt(selectedCount.value));
+                if (!questions) {
+                    return; // 질문 생성 실패 시 중단
+                }
+            }
+
+            // 선택된 설정을 세션 스토리지에 저장
+            const settings = {
+                count: selectedCount.value,
+                questionSource: selectedSource.value,
+                difficulty: 'medium',  // 기본 난이도 설정
+                questionCount: parseInt(selectedCount.value)  // 선택된 횟수를 questionCount로도 저장
+            };
+            sessionStorage.setItem('mbtiSettings', JSON.stringify(settings));
+
+            // 질문 페이지로 이동
+            window.location.href = 'index2.html';
+        }
+    </script>
+</body>
+</html> 
