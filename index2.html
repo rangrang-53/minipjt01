@@ -2,7 +2,10 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>MBTI T/F 분석기 - 질문</title>
     <link rel="stylesheet" href="common.css">
     <style>
@@ -33,7 +36,6 @@
             align-items: center;
             justify-content: center;
             font-size: 1.3rem;
-            font-weight: bold;
             color: #111;
             text-align: center;
             box-sizing: border-box;
@@ -164,7 +166,184 @@
             z-index: 20;
             font-size: 2rem;
         }
-        @media (max-width: 600px) {
+        /* 반응형 디자인 - 모든 디바이스 최적화 */
+        
+        /* 대형 데스크톱 (1200px 이상) */
+        @media (min-width: 1200px) {
+            .question-bar {
+                height: 180px;
+                font-size: 1.5rem;
+            }
+            .character {
+                width: 400px;
+                height: 400px;
+            }
+            .face {
+                width: 400px;
+                height: 400px;
+            }
+            .uibox-bg {
+                width: 900px;
+                min-height: 180px;
+            }
+            .uibox-input {
+                font-size: 1.3rem;
+                height: 70px;
+            }
+        }
+        
+        /* 중형 데스크톱 (992px - 1199px) */
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .question-bar {
+                height: 160px;
+                font-size: 1.4rem;
+            }
+            .character {
+                width: 380px;
+                height: 380px;
+            }
+            .face {
+                width: 380px;
+                height: 380px;
+            }
+            .uibox-bg {
+                width: 850px;
+                min-height: 160px;
+            }
+        }
+        
+        /* 소형 데스크톱 (768px - 991px) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .question-bar {
+                height: 150px;
+                font-size: 1.3rem;
+            }
+            .character {
+                width: 320px;
+                height: 320px;
+            }
+            .face {
+                width: 320px;
+                height: 320px;
+            }
+            .uibox-bg {
+                width: 700px;
+                min-height: 150px;
+                padding: 0 30px;
+            }
+            .uibox-input {
+                font-size: 1.1rem;
+                height: 60px;
+            }
+        }
+        
+        /* 태블릿 (576px - 767px) */
+        @media (min-width: 576px) and (max-width: 767px) {
+            .question-bar {
+                height: 140px;
+                font-size: 1.2rem;
+            }
+            .character {
+                width: 280px;
+                height: 280px;
+            }
+            .face {
+                width: 280px;
+                height: 280px;
+            }
+            .uibox-bg {
+                width: 90vw;
+                min-height: 140px;
+                padding: 0 25px;
+                gap: 20px;
+            }
+            .uibox-input {
+                font-size: 1rem;
+                height: 55px;
+                padding: 0 20px;
+            }
+            .submit-button .btn-img,
+            .stt-button .btn-img {
+                height: 40px;
+            }
+        }
+        
+        /* 모바일 (480px - 575px) */
+        @media (min-width: 480px) and (max-width: 575px) {
+            .question-bar {
+                height: 130px;
+                font-size: 1.1rem;
+            }
+            .character {
+                width: 240px;
+                height: 240px;
+            }
+            .face {
+                width: 240px;
+                height: 240px;
+            }
+            .uibox-bg {
+                width: 92vw;
+                min-height: 130px;
+                padding: 0 20px;
+                gap: 15px;
+                bottom: 30px;
+            }
+            .uibox-input {
+                font-size: 0.95rem;
+                height: 50px;
+                padding: 0 15px;
+            }
+            .submit-button .btn-img,
+            .stt-button .btn-img {
+                height: 35px;
+            }
+            .submit-button .btn-label {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* 소형 모바일 (320px - 479px) */
+        @media (min-width: 320px) and (max-width: 479px) {
+            .question-bar {
+                height: 120px;
+                font-size: 1rem;
+            }
+            .character {
+                width: 200px;
+                height: 200px;
+            }
+            .face {
+                width: 200px;
+                height: 200px;
+            }
+            .uibox-bg {
+                width: 94vw;
+                min-height: 120px;
+                padding: 0 15px;
+                gap: 12px;
+                bottom: 25px;
+            }
+            .uibox-input {
+                font-size: 0.9rem;
+                height: 45px;
+                padding: 0 12px;
+            }
+            .submit-button .btn-img,
+            .stt-button .btn-img {
+                height: 30px;
+            }
+            .submit-button .btn-label {
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* 초소형 모바일 (320px 미만) */
+        @media (max-width: 319px) {
+            .question-bar {
+                height: 110px;
+                font-size: 0.9rem;
+            }
             .character {
                 width: 160px;
                 height: 160px;
@@ -173,17 +352,304 @@
                 width: 160px;
                 height: 160px;
             }
-            .answer-bar {
-                flex-direction: column;
-                align-items: stretch;
+            .uibox-bg {
+                width: 96vw;
+                min-height: 110px;
+                padding: 0 10px;
+                gap: 10px;
+                bottom: 20px;
             }
-            .answer-input {
-                margin-right: 0;
-                margin-bottom: 0.7rem;
+            .uibox-input {
+                font-size: 0.85rem;
+                height: 40px;
+                padding: 0 10px;
             }
-            .button-group {
-                flex-direction: row;
-                justify-content: flex-end;
+            .submit-button .btn-img,
+            .stt-button .btn-img {
+                height: 25px;
+            }
+            .submit-button .btn-label {
+                font-size: 0.75rem;
+            }
+        }
+        
+        /* 세로 화면 (높이가 너비보다 작은 경우) */
+        @media (orientation: portrait) {
+            .character-center {
+                min-height: 300px;
+                padding-top: 40px;
+            }
+        }
+        
+        /* 세로가 긴 화면 (iPhone 12 Pro 등) 최적화 */
+        @media (orientation: portrait) and (min-height: 800px) {
+            .question-bar {
+                height: 120px;
+                font-size: 1.1rem;
+            }
+            
+            .character-center {
+                min-height: 400px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+            
+            .character {
+                width: 280px;
+                height: 280px;
+                margin: 0 auto 1rem auto;
+            }
+            
+            .face {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .uibox-bg {
+                width: 90vw;
+                min-height: 120px;
+                padding: 0 20px;
+                gap: 15px;
+                bottom: 30px;
+            }
+            
+            .uibox-input {
+                font-size: 1rem;
+                height: 50px;
+                padding: 0 15px;
+            }
+            
+            .submit-button .btn-img,
+            .stt-button .btn-img {
+                height: 35px;
+            }
+            
+            .submit-button .btn-label {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* 매우 세로가 긴 화면 (iPhone 12 Pro Max 등) */
+        @media (orientation: portrait) and (min-height: 900px) {
+            .question-bar {
+                height: 130px;
+                font-size: 1.2rem;
+            }
+            
+            .character-center {
+                min-height: 450px;
+                padding-top: 30px;
+                padding-bottom: 30px;
+            }
+            
+            .character {
+                width: 320px;
+                height: 320px;
+                margin: 0 auto 1.5rem auto;
+            }
+            
+            .face {
+                width: 320px;
+                height: 320px;
+            }
+            
+            .uibox-bg {
+                width: 85vw;
+                min-height: 130px;
+                padding: 0 25px;
+                gap: 20px;
+                bottom: 40px;
+            }
+            
+            .uibox-input {
+                font-size: 1.1rem;
+                height: 55px;
+                padding: 0 20px;
+            }
+            
+            .submit-button .btn-img,
+            .stt-button .btn-img {
+                height: 40px;
+            }
+            
+            .submit-button .btn-label {
+                font-size: 1rem;
+            }
+        }
+        
+        /* iPhone 12 Pro 특정 최적화 (390x844) */
+        @media (width: 390px) and (height: 844px) {
+            .question-bar {
+                height: 110px;
+                font-size: 1rem;
+            }
+            
+            .character-center {
+                min-height: 350px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+            
+            .character {
+                width: 240px;
+                height: 240px;
+                margin: 0 auto 0.8rem auto;
+            }
+            
+            .face {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .uibox-bg {
+                width: 92vw;
+                min-height: 110px;
+                padding: 0 18px;
+                gap: 12px;
+                bottom: 25px;
+            }
+            
+            .uibox-input {
+                font-size: 0.95rem;
+                height: 48px;
+                padding: 0 15px;
+            }
+            
+            .submit-button .btn-img,
+            .stt-button .btn-img {
+                height: 32px;
+            }
+            
+            .submit-button .btn-label {
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* iPhone 12 Pro Max 특정 최적화 (428x926) */
+        @media (width: 428px) and (height: 926px) {
+            .question-bar {
+                height: 120px;
+                font-size: 1.1rem;
+            }
+            
+            .character-center {
+                min-height: 380px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+            
+            .character {
+                width: 260px;
+                height: 260px;
+                margin: 0 auto 1rem auto;
+            }
+            
+            .face {
+                width: 260px;
+                height: 260px;
+            }
+            
+            .uibox-bg {
+                width: 90vw;
+                min-height: 120px;
+                padding: 0 20px;
+                gap: 15px;
+                bottom: 30px;
+            }
+            
+            .uibox-input {
+                font-size: 1rem;
+                height: 52px;
+                padding: 0 18px;
+            }
+            
+            .submit-button .btn-img,
+            .stt-button .btn-img {
+                height: 35px;
+            }
+            
+            .submit-button .btn-label {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* 가로 화면 (너비가 높이보다 큰 경우) */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .question-bar {
+                height: 100px;
+                font-size: 1rem;
+            }
+            .character {
+                width: 180px;
+                height: 180px;
+            }
+            .face {
+                width: 180px;
+                height: 180px;
+            }
+            .uibox-bg {
+                min-height: 100px;
+                bottom: 15px;
+            }
+            .character-center {
+                min-height: 200px;
+                padding-top: 20px;
+            }
+        }
+        
+        /* 터치 디바이스 최적화 */
+        @media (hover: none) and (pointer: coarse) {
+            .submit-button,
+            .stt-button {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            .uibox-input {
+                min-height: 44px;
+            }
+            
+            .review-icon {
+                width: 60px;
+                height: 60px;
+                line-height: 60px;
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* iPhone 노치/홈 인디케이터 안전 영역 */
+        @supports (padding: max(0px)) {
+            .uibox-bg {
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+                bottom: max(20px, env(safe-area-inset-bottom));
+            }
+            
+            .question-bar {
+                padding-top: max(10px, env(safe-area-inset-top));
+            }
+        }
+        
+        /* 세로가 긴 화면에서 버튼이 짤리지 않도록 보장 */
+        @media (orientation: portrait) and (min-height: 800px) {
+            body {
+                min-height: 100vh;
+                min-height: 100dvh; /* 동적 뷰포트 높이 */
+            }
+            
+            .uibox-bg {
+                position: fixed;
+                bottom: max(20px, env(safe-area-inset-bottom, 20px));
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1000;
+            }
+        }
+        
+        /* 고해상도 디스플레이 최적화 */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .uibox-input {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
             }
         }
     .textbar-container {
@@ -384,23 +850,58 @@
         height: auto;
         display: block;
     }
-    .detail-modal-content {
-        background: url('images/note.png') no-repeat center center !important;
-        background-size: cover !important;
-        border-radius: 16px;
-        max-width: 340px;
-        margin: 60px auto;
-        padding: 1.2em;
-        box-shadow: 0 4px 32px rgba(0,0,0,0.18);
-        position: relative;
-        font-size: 0.95em;
-    }
-    .main-result-text {
-        color: rgb(254,157,41);
-        font-size: 1.2em;
-        font-weight: bold;
-        text-shadow: 1.5px 1.5px 0 rgb(0, 0, 0);
-    }
+            .detail-modal-content {
+            background: url('images/note.png') no-repeat center center !important;
+            background-size: cover !important;
+            border-radius: 16px;
+            max-width: 340px;
+            margin: 60px auto;
+            padding: 1.2em;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        /* 모달 반응형 스타일 */
+        @media (max-width: 767px) {
+            .detail-modal-content {
+                max-width: 90vw;
+                margin: 40px auto;
+                padding: 1em;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 479px) {
+            .detail-modal-content {
+                max-width: 95vw;
+                margin: 20px auto;
+                padding: 0.8em;
+                font-size: 0.85em;
+            }
+        }
+            .main-result-text {
+            color: rgb(254,157,41);
+            font-family: 'HeirofBold';
+            font-size: 1.2em;
+            font-weight: bold;
+            text-shadow: 1.5px 1.5px 0 rgb(0, 0, 0);
+        }
+        
+        /* 결과 텍스트 반응형 */
+        @media (max-width: 767px) {
+            .main-result-text {
+                font-size: 1.1em;
+                font-family: 'HeirofBold';
+            }
+        }
+        
+        @media (max-width: 479px) {
+            .main-result-text {
+                font-size: 1em;
+                font-family: 'HeirofBold';
+            }
+        }
     </style>
 </head>
 <body>
@@ -426,6 +927,17 @@
     </div>
 
     <style>
+    #question{
+        font-family: 'HeirofBold';
+    }
+    #answerInput, .btn-label{
+        font-family: 'HeirofLight';
+    }
+    
+    #answerInput::placeholder {
+        font-family: 'HeirofLight';
+    }
+
     .uibox-bg {
         width: 800px;
         min-height: 150px;
@@ -471,6 +983,102 @@
         font-size: 1.1rem;
         opacity: 1;
     }
+    
+    /* 자동완성 선택 시 입력창 배경색 고정 */
+    .uibox-input:-webkit-autofill,
+    .uibox-input:-webkit-autofill:hover,
+    .uibox-input:-webkit-autofill:focus,
+    .uibox-input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+        -webkit-text-fill-color: #fff !important;
+        background-color: transparent !important;
+        transition: background-color 5000s ease-in-out 0s;
+        color: #fff !important;
+    }
+    
+    /* 자동완성 후 텍스트 색상 강제 고정 */
+    .uibox-input:-webkit-autofill {
+        -webkit-text-fill-color: #fff !important;
+        color: #fff !important;
+    }
+    
+    /* 자동완성 후 포커스 시에도 흰색 유지 */
+    .uibox-input:-webkit-autofill:focus {
+        -webkit-text-fill-color: #fff !important;
+        color: #fff !important;
+    }
+    
+    /* 자동완성 후 호버 시에도 흰색 유지 */
+    .uibox-input:-webkit-autofill:hover {
+        -webkit-text-fill-color: #fff !important;
+        color: #fff !important;
+    }
+    
+    /* 자동완성 드롭다운 글씨 크기 고정 */
+    .uibox-input::-webkit-list-button {
+        font-size: 1.2rem !important;
+    }
+    
+    /* 자동완성 드롭다운 옵션 글씨 크기 고정 */
+    .uibox-input::-webkit-calendar-picker-indicator {
+        font-size: 1.2rem !important;
+    }
+    
+    /* 자동완성 드롭다운 텍스트 크기 고정 */
+    .uibox-input::-webkit-datetime-edit-text {
+        font-size: 1.2rem !important;
+    }
+    
+    /* 자동완성 드롭다운 필드 글씨 크기 고정 */
+    .uibox-input::-webkit-datetime-edit-month-field,
+    .uibox-input::-webkit-datetime-edit-day-field,
+    .uibox-input::-webkit-datetime-edit-year-field {
+        font-size: 1.2rem !important;
+    }
+    
+    /* 자동완성 드롭다운 호버 시 글씨 크기 유지 */
+    .uibox-input::-webkit-list-button:hover,
+    .uibox-input::-webkit-calendar-picker-indicator:hover,
+    .uibox-input::-webkit-datetime-edit-text:hover,
+    .uibox-input::-webkit-datetime-edit-month-field:hover,
+    .uibox-input::-webkit-datetime-edit-day-field:hover,
+    .uibox-input::-webkit-datetime-edit-year-field:hover {
+        font-size: 1.2rem !important;
+        transform: none !important;
+        scale: 1 !important;
+    }
+    
+    /* 자동완성 드롭다운 전체 글씨 크기 강제 고정 */
+    .uibox-input::-webkit-autofill,
+    .uibox-input::-webkit-autofill:hover,
+    .uibox-input::-webkit-autofill:focus,
+    .uibox-input::-webkit-autofill:active {
+        font-size: 1.2rem !important;
+        font-weight: normal !important;
+        letter-spacing: normal !important;
+        line-height: normal !important;
+    }
+    
+    /* 자동완성 드롭다운 모든 요소 글씨 크기 고정 */
+    .uibox-input::-webkit-any-link,
+    .uibox-input::-webkit-any-link:hover,
+    .uibox-input::-webkit-any-link:active,
+    .uibox-input::-webkit-any-link:visited {
+        font-size: 1.2rem !important;
+        text-decoration: none !important;
+    }
+    
+    /* 자동완성 드롭다운 선택된 항목 글씨 크기 고정 */
+    .uibox-input::-webkit-list-button:active,
+    .uibox-input::-webkit-calendar-picker-indicator:active,
+    .uibox-input::-webkit-datetime-edit-text:active,
+    .uibox-input::-webkit-datetime-edit-month-field:active,
+    .uibox-input::-webkit-datetime-edit-day-field:active,
+    .uibox-input::-webkit-datetime-edit-year-field:active {
+        font-size: 1.2rem !important;
+        transform: none !important;
+        scale: 1 !important;
+    }
     .submit-button .btn-img,
     .stt-button .btn-img {
         height: 48px;
@@ -496,7 +1104,7 @@
         font-size: 1.1rem;
         font-weight: bold;
         pointer-events: none;
-        text-shadow: 0 1px 4px #000, 0 0 2px #000;
+        /* text-shadow: 0 1px 4px #000, 0 0 2px #000; */
         white-space: nowrap;
     }
     .stt-button {
@@ -537,6 +1145,7 @@
         cursor: pointer;
         transition: background 0.2s;
         display: block;
+        font-family: 'HeirofBold';
     }
     .next-btn:hover {
         background: #1976D2;
@@ -544,7 +1153,7 @@
     </style>
     <input type="file" id="audioInput" accept="audio/*" style="display: none;" onchange="handleAudioFile(this.files[0])">
     <div id="loadingMessage" style="display:none; color:#2196F3; font-weight:bold; margin-top:1rem;">
-        <span id="loadingText">AI가 분석중입니다</span><span id="loadingDots"></span>
+        <span id="loadingText" style="font-family: 'HeirofLight';">AI가 분석중입니다</span><span id="loadingDots"></span>
     </div>
     <div class="review-icon" id="reviewIcon" onclick="showReview()">��</div>
     <!-- 리뷰 모달 -->
@@ -763,17 +1372,17 @@
             else resultText = `당신은 확실한 F입니다! "너 F구나?" (T: ${tPercentage}% / F: ${fPercentage}%)`;
             uibox.innerHTML = `
                 <div class="result-content">
-                    <p class="main-result-text">${resultText}</p>
+                    <p class="main-result-text" style="font-family: 'HeirofBold';">${resultText}</p>
                     <div style="position: relative; width: 80%; margin: 1.2rem auto;">
                         <div style="width: 100%; height: 24px; background: linear-gradient(to right, #ff4444, #ffff44, #44ff44); border-radius: 12px; position: relative;">
                             <div style="width: 3px; height: 32px; background: black; position: absolute; left: ${tfScore}%; top: -4px;"></div>
                         </div>
                         <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 1em;">
                             <div style="text-align: left; width: 45%; background: rgba(255,68,68,0.08); padding: 6px; border-radius: 8px;">
-                                <span style="font-weight: bold; color: #ff4444;">Thinking: ${tPercentage}%</span>
+                                <span style="font-weight: bold; color: #ff4444; font-family: 'HeirofBold';">Thinking: ${tPercentage}%</span>
                             </div>
                             <div style="text-align: right; width: 45%; background: rgba(68,255,68,0.08); padding: 6px; border-radius: 8px;">
-                                <span style="font-weight: bold; color: #44ff44;">Feeling: ${fPercentage}%</span>
+                                <span style="font-weight: bold; color: #44ff44; font-family: 'HeirofBold';">Feeling: ${fPercentage}%</span>
                             </div>
                         </div>
                     </div>
@@ -1014,13 +1623,13 @@
             modal.className = 'detail-modal';
             modal.innerHTML = `
                 <div class="detail-modal-content" style="background:#fff; border-radius:16px; max-width:500px; margin:100px auto; padding:2em; box-shadow:0 4px 32px rgba(0,0,0,0.18); position:relative;">
-                    <h4 style="margin-bottom:0.7em;">상세 분석</h4>
-                    <div style="margin-bottom:1.2em;">${lastResultData.detailed_analysis || ''}</div>
-                    <h4 style="margin-bottom:0.7em;">분석 근거</h4>
-                    <div style="margin-bottom:1.2em;">${lastResultData.reasoning || ''}</div>
-                    <h4 style="margin-bottom:0.7em;">개선 제안</h4>
-                    <ul style="margin-bottom:1.2em;">${(lastResultData.suggestions || []).map(s => `<li>${s}</li>`).join('')}</ul>
-                    <button onclick="closeDetailModal()" style="margin-top:1em; padding:0.5em 1.5em; border-radius:8px; border:none; background:#1976D2; color:#fff; cursor:pointer;">닫기</button>
+                    <h4 style="margin-bottom:0.7em; font-family: 'HeirofBold';">상세 분석</h4>
+                    <div style="margin-bottom:1.2em; font-family: 'HeirofLight';">${lastResultData.detailed_analysis || ''}</div>
+                    <h4 style="margin-bottom:0.7em; font-family: 'HeirofBold';">분석 근거</h4>
+                    <div style="margin-bottom:1.2em; font-family: 'HeirofLight';">${lastResultData.reasoning || ''}</div>
+                    <h4 style="margin-bottom:0.7em; font-family: 'HeirofBold';">개선 제안</h4>
+                    <ul style="margin-bottom:1.2em; font-family: 'HeirofLight';">${(lastResultData.suggestions || []).map(s => `<ul>${s}</ul>`).join('')}</ul>
+                    <button onclick="closeDetailModal()" style="margin-top:1em; padding:0.5em 1.5em; border-radius:8px; border:none; background:#1976D2; color:#fff; cursor:pointer; font-family: 'HeirofLight';">닫기</button>
                 </div>
             `;
             Object.assign(modal.style, {
