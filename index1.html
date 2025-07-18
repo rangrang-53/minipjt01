@@ -11,15 +11,28 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
         }
+        
+        .container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
         /* 인트로 페이지 스타일 */
         .intro-page {
             text-align: center;
-            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
         }
 
         .main-title {
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             color: #333;
             margin-bottom: 2rem;
             font-weight: bold;
@@ -32,54 +45,221 @@
             flex-direction: column;
             align-items: center;
         }
+        
         .settings-box {
             display: flex;
             flex-direction: row;
             justify-content: center;
-            gap: 3rem;
+            gap: clamp(1rem, 3vw, 3rem);
             background: rgba(0,0,0,0.5);
             border-radius: 16px;
-            padding: 2rem 3rem;
+            padding: clamp(1rem, 3vw, 2rem) clamp(1.5rem, 4vw, 3rem);
             margin-bottom: 2rem;
+            width: 100%;
+            max-width: 700px;
+            flex-wrap: wrap;
         }
+        
         .setting-group {
             margin: 0;
-            /* padding: 1.5rem 2rem; */
-            /* background: rgba(255,255,255,0.85); */
-            /* border-radius: 12px; */
-            /* box-shadow: 0 2px 8px rgba(0,0,0,0.04); */
             min-width: 0;
+            flex: 1;
+            min-width: 200px;
         }
 
         .setting-group h3 {
             margin: 0 0 1rem 0;
-            color: #333;
-            font-size: 1.1rem;
+            color: rgb(254,157,41);
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            text-shadow: 
+            -1px -1px 0 #222,
+            1px -1px 0 #222,
+            -1px 1px 0 #222,
+            1px 1px 0 #222;
+            font-family: 'HeirofBold';
         }
+        
         .setting-title {
-            font-size: 2rem;
+            font-size: clamp(1.2rem, 3vw, 2rem);
             color: #fff;
             font-weight: bold;
-            -webkit-text-stroke: 1px #222;
-            text-stroke: 1px #222;
+            margin-bottom: 1rem;
         }
+        
         .setting-label {
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 2.2vw, 1rem);
             color: #fff;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-family: 'HeirofLight'
         }
+        
         .vertical-radio-group {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .radio-label:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .radio-label input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgb(254, 157, 41);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .radio-label input[type="radio"]:checked {
+            background: rgb(254, 157, 41);
+            box-shadow: 0 0 10px rgba(254, 157, 41, 0.5);
+        }
+        
+        .radio-label input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        .radio-label input[type="radio"]:hover {
+            border-color: rgb(254, 157, 41);
+            box-shadow: 0 0 8px rgba(254, 157, 41, 0.3);
+        }
+        
+        .start-button {
+            margin-top: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .start-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .start-button img {
+            height: clamp(60px, 15vw, 80px);
+            vertical-align: middle;
+            max-width: 100%;
+        }
+        
+        .logo {
+            width: clamp(250px, 60vw, 400px);
+            margin-bottom: 1rem;
+            max-width: 100%;
+        }
+        
+        /* 모바일 반응형 */
+        @media (max-width: 768px) {
+            .settings-box {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            
+            .setting-group {
+                min-width: auto;
+            }
+            
+            .radio-group {
+                align-items: center;
+            }
+            
+            .vertical-radio-group {
+                align-items: center;
+            }
+            
+            .setting-label {
+                text-align: center;
+                font-family: 'HeirofLight';
+            }
+        }
+        
+        /* 작은 모바일 화면 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+            }
+            
+            .settings-box {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .setting-title {
+                font-size: 1.1rem;
+            }
+            
+            .setting-label {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* 태블릿 반응형 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .settings-box {
+                gap: 2rem;
+                padding: 2rem;
+            }
+            
+            .setting-title {
+                font-size: 1.5rem;
+            }
+            
+            .setting-label {
+                font-size: 0.95rem;
+            }
+        }
+        
+        /* 큰 화면 */
+        @media (min-width: 1025px) {
+            .settings-box {
+                gap: 3rem;
+                padding: 2.5rem 3rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="intro-page" id="introPage">
-            <img src="Main_pg/youT_logo.png" alt="로고" style="width:400px; margin-bottom:1rem;">
-            <!-- main-title 삭제 -->
-            <!-- 시작 버튼 제거 -->
+            <img src="Main_pg/youT_logo.png" alt="로고" class="logo">
             <div class="count-selection" id="countSelection">
                 <div class="settings-box">
                     <!-- 분석 횟수 선택 -->
@@ -91,11 +271,13 @@
                             <label class="radio-label setting-label">
                                 <input type="radio" name="count" value="1" checked> 1회
                             </label>
-                            <label class="radio-label setting-label">
-                                <input type="radio" name="count" value="3"> 3회
+                            <label class="radio-label">
+                                <input type="radio" name="count" value="3">
+                                <span class="setting-label">3회</span>
                             </label>
-                            <label class="radio-label setting-label">
-                                <input type="radio" name="count" value="5"> 5회
+                            <label class="radio-label">
+                                <input type="radio" name="count" value="5">
+                                <span class="setting-label">5회</span>
                             </label>
                         </div>
                     </div>
@@ -105,17 +287,19 @@
                             질문 타입
                         </h3>
                         <div class="radio-group vertical-radio-group">
-                            <label class="radio-label setting-label">
-                                <input type="radio" name="questionSource" value="default" checked> 인터넷 밈(json하드코딩)
+                            <label class="radio-label">
+                                <input type="radio" name="questionSource" value="default" checked>
+                                <span class="setting-label">인터넷 밈(json하드코딩)</span>
                             </label>
-                            <label class="radio-label setting-label">
-                                <input type="radio" name="questionSource" value="ai"> AI 맞춤형(Gemini 연동) 
+                            <label class="radio-label">
+                                <input type="radio" name="questionSource" value="ai">
+                                <span class="setting-label">AI 맞춤형(Gemini 연동)</span>
                             </label>
                         </div>
                     </div>
                 </div>
-                <button class="start-button" onclick="startAnalysis()" style="margin-top: 1rem; background:none; border:none;">
-                    <img src="Main_pg/Start_Button.png" alt="분석 시작" style="height:80px; vertical-align:middle;">
+                <button class="start-button" onclick="startAnalysis()">
+                    <img src="Main_pg/Start_Button.png" alt="분석 시작">
                 </button>
             </div>
         </div>
@@ -124,12 +308,6 @@
     <script>
         // API 기본 URL 설정
         const API_BASE_URL = 'http://localhost:8000';
-
-        // 시작 버튼 클릭 시
-        // function showCountSelection() {
-        //     document.getElementById('startButton').style.display = 'none';
-        //     document.getElementById('countSelection').style.display = 'block';
-        // }
 
         // 새로운 AI 질문 생성 (기본값 사용)
         async function generateNewQuestions(questionCount) {
